@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Погода, CU!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f4f6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: #fff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        label {
+            font-size: 14px;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            background: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .result {
+            font-size: 20px;
+            margin-top: 20px;
+            padding: 15px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            word-wrap: break-word;
+            overflow: auto;
+            max-height: 200px;
+            font-family: monospace;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Погода, CU!</h1>
+    <form method="POST">
+        <!-- Место отправления -->
+        <div class="input-group">
+            <label for="start_lat">Широта:</label>
+            <input type="number" step="any" id="start_lat" name="start_lat" placeholder="Например, 55.7558" required>
+        </div>
+        <div class="input-group">
+            <label for="start_lon">Долгота:</label>
+            <input type="number" step="any" id="start_lon" name="start_lon" placeholder="Например, 37.6173" required>
+        </div>
+        <button type="submit">Узнать погоду</button>
+    </form>
+
+    {% if weather %}
+    <div class="result">
+        {% if weather.error %}
+        <p><strong>Ошибка:</strong> {{ weather.error }}</p>
+        {% else %}
+        <p><strong>Место:</strong> {{ weather.location }}, {{ weather.country }}</p>
+        <p></p>
+        <p><strong>Описание:</strong> {{ weather.weather }}</p>
+        <p><strong>Температура:</strong> {{ weather.temperature }} °C</p>
+        <p><strong>Влажность:</strong> {{ weather.humidity }} %</p>
+        <p><strong>Скорость ветра:</strong> {{ weather.wind_speed }} км/ч</p>
+        <p><strong>Направление ветра:</strong> {{ weather.wind_direction }}</p>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+</body>
+</html>
