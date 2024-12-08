@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Погода в двух точках</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #fff;
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 400px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    label {
+      font-size: 14px;
+      color: #555;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Погода в двух точках</h1>
+    <form method="POST">
+      <!-- Место отправления -->
+      <div class="input-group">
+        <label for="start_lat">Широта места отправления:</label>
+        <input type="number" step="any" id="start_lat" name="start_lat" placeholder="Например, 55.7558" required>
+      </div>
+      <div class="input-group">
+        <label for="start_lon">Долгота места отправления:</label>
+        <input type="number" step="any" id="start_lon" name="start_lon" placeholder="Например, 37.6173" required>
+      </div>
+      <!-- Место назначения -->
+      <div class="input-group">
+        <label for="end_lat">Широта места назначения:</label>
+        <input type="number" step="any" id="end_lat" name="end_lat" placeholder="Например, 40.7128" required>
+      </div>
+      <div class="input-group">
+        <label for="end_lon">Долгота места назначения:</label>
+        <input type="number" step="any" id="end_lon" name="end_lon" placeholder="Например, -74.0060" required>
+      </div>
+      <button type="submit">Узнать погоду</button>
+    </form>
+
+    {% if start_weather or end_weather %}
+      <div class="result">
+        {% if start_weather.error %}
+          <p><strong>Ошибка для места отправления:</strong> {{ start_weather.error }}</p>
+        {% else %}
+          <p><strong>Место отправления:</strong> {{ start_weather.location }}, {{ start_weather.country }}</p>
+          <p>Погода: {{ start_weather.weather }}, {{ start_weather.temperature }} °C</p>
+        {% endif %}
+
+        {% if end_weather.error %}
+          <p><strong>Ошибка для места назначения:</strong> {{ end_weather.error }}</p>
+        {% else %}
+          <p><strong>Место назначения:</strong> {{ end_weather.location }}, {{ end_weather.country }}</p>
+          <p>Погода: {{ end_weather.weather }}, {{ end_weather.temperature }} °C</p>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>
