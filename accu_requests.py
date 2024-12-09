@@ -48,18 +48,15 @@ class RequestHandler:
     def get_weather_by_coords(self, lo, la):
         loc_key, loc_name, loc_country, loc_error = self.get_region_key(lo, la)
 
-        if not loc_key:
-            weather_url = self.base_url + f"/forecasts/v1/hourly/1hour/{loc_key}"
-            params = {
-                "apikey": API_KEY,
-                "details": "true",
-                "language": "ru"
-            }
-            response = requests.get(weather_url, params=params)
-        else:
-            response = ''
+        weather_url = self.base_url + f"/forecasts/v1/hourly/1hour/{loc_key}"
+        params = {
+            "apikey": API_KEY,
+            "details": "true",
+            "language": "ru"
+        }
+        response = requests.get(weather_url, params=params)
 
-        if response.status_code == 200 and not loc_error:
+        if not loc_error and response.status_code == 200 and not loc_error:
             weather_data = response.json()
             return bring_to_format(weather_data=weather_data, loc_name=loc_name, loc_country=loc_country)
         elif loc_error:

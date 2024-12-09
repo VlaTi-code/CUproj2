@@ -23,7 +23,7 @@
             border-radius: 10px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
             text-align: center;
-            width: 400px;
+            width: 500px;
         }
 
         h1 {
@@ -48,6 +48,7 @@
             font-size: 14px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            box-sizing: border-box;
         }
 
         button {
@@ -66,15 +67,13 @@
         }
 
         .result {
-            font-size: 20px;
-            margin-top: 20px;
-            padding: 15px;
+            font-size: 16px;
+            margin-top: 10px;
+            padding: 10px;
             background: #f9f9f9;
             border: 1px solid #ddd;
             border-radius: 5px;
             word-wrap: break-word;
-            overflow: auto;
-            max-height: 200px;
             font-family: monospace;
         }
 
@@ -86,28 +85,49 @@
     <form method="POST">
         <!-- Место отправления -->
         <div class="input-group">
-            <label for="start_lat">Широта:</label>
+            <label for="start_lat">Широта точки отправления:</label>
             <input type="number" step="any" id="start_lat" name="start_lat" placeholder="Например, 55.7558" required>
         </div>
         <div class="input-group">
-            <label for="start_lon">Долгота:</label>
+            <label for="start_lon">Долгота точки отправления:</label>
             <input type="number" step="any" id="start_lon" name="start_lon" placeholder="Например, 37.6173" required>
+        </div>
+        <div class="input-group">
+            <label for="end_lat">Широта точки прибытия:</label>
+            <input type="number" step="any" id="end_lat" name="end_lat" placeholder="Например, 34.1415" required>
+        </div>
+        <div class="input-group">
+            <label for="end_lon">Долгота точки прибытия:</label>
+            <input type="number" step="any" id="end_lon" name="end_lon" placeholder="Например, 68.2567" required>
         </div>
         <button type="submit">Узнать погоду</button>
     </form>
 
-    {% if weather %}
+    {% if start_weather or end_weather %}
     <div class="result">
-        {% if weather.error %}
-        <p><strong>Ошибка:</strong> {{ weather.error }}</p>
+        {% if start_weather.error %}
+        <p><strong>Ошибка:</strong> {{ start_weather.error }}</p>
         {% else %}
-        <p><strong>Место:</strong> {{ weather.location }}, {{ weather.country }}</p>
+        <p><strong>Место отправления:</strong> {{ start_weather.location }}, {{ start_weather.country }}</p>
         <p></p>
-        <p><strong>Описание:</strong> {{ weather.weather }}</p>
-        <p><strong>Температура:</strong> {{ weather.temperature }} °C</p>
-        <p><strong>Влажность:</strong> {{ weather.humidity }} %</p>
-        <p><strong>Скорость ветра:</strong> {{ weather.wind_speed }} км/ч</p>
-        <p><strong>Направление ветра:</strong> {{ weather.wind_direction }}</p>
+        <p><strong>Описание:</strong> {{ start_weather.weather }}</p>
+        <p><strong>Температура:</strong> {{ start_weather.temperature }} °C</p>
+        <p><strong>Влажность:</strong> {{ start_weather.humidity }} %</p>
+        <p><strong>Скорость ветра:</strong> {{ start_weather.wind_speed }} км/ч</p>
+        <p><strong>Направление ветра:</strong> {{ start_weather.wind_direction }}</p>
+        {% endif %}
+    </div>
+    <div class="result">
+        {% if end_weather.error %}
+        <p><strong>Ошибка:</strong> {{ end_weather.error }}</p>
+        {% else %}
+        <p><strong>Место прибытия:</strong> {{ end_weather.location }}, {{ end_weather.country }}</p>
+        <p></p>
+        <p><strong>Описание:</strong> {{ end_weather.weather }}</p>
+        <p><strong>Температура:</strong> {{ end_weather.temperature }} °C</p>
+        <p><strong>Влажность:</strong> {{ end_weather.humidity }} %</p>
+        <p><strong>Скорость ветра:</strong> {{ end_weather.wind_speed }} км/ч</p>
+        <p><strong>Направление ветра:</strong> {{ end_weather.wind_direction }}</p>
         {% endif %}
     </div>
     {% endif %}
